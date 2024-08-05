@@ -22,4 +22,4 @@ docker pull advisorgee/caddy-dns-acmedns:latest
 
 * [Caddy Docker](https://hub.docker.com/_/caddy)
 * [Caddy Server](https://caddyserver.com/docs/)
-* [ACME-DNS module for Caddy Server](https://github.com/caddy-dns/easydns)
+* [EasyDNS module for Caddy Server](https://github.com/caddy-dns/easydns)
