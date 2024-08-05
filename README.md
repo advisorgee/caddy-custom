@@ -10,12 +10,12 @@ Caddy Web Server with EASY-DNS Provider
 * from GitHub Container Registry: 
 
 ```
-docker pull ghcr.io/advisorgee/caddy-dns-acmedns:latest
+docker pull ghcr.io/advisorgee/caddy-dns-easydns:latest
 ```
 * from Docker Hub:
 
 ```
-docker pull advisorgee/caddy-dns-acmedns:latest
+docker pull advisorgee/caddy-dns-easydns:latest
 ```
 
 **Documentation**
@@ -23,3 +23,4 @@ docker pull advisorgee/caddy-dns-acmedns:latest
 * [Caddy Docker](https://hub.docker.com/_/caddy)
 * [Caddy Server](https://caddyserver.com/docs/)
 * [EasyDNS module for Caddy Server](https://github.com/caddy-dns/easydns)
+
