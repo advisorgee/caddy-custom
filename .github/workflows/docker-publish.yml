@@ -5,7 +5,7 @@ name: Build caddy-easydns
 on:
   workflow_dispatch: # allows to run the workflow manually from the Actions tab
   schedule:
-    - cron: '37 7 * * *'
+    - cron: '0 3 10 * *'
   push:
     branches: "main"
     paths:
