@@ -1,9 +1,9 @@
-# caddy-dns-easydns
+# caddy-easydns
 Caddy Web Server with EASY-DNS Provider
 
-[![Docker Build and Publish](https://github.com/advisorgee/caddy-dns-easydns/actions/workflows/docker-publish.yml/badge.svg)](https://github.com/advisorgee/caddy-dns-easydns/actions/workflows/docker-publish.yml)
+[![Docker Build and Publish](https://github.com/advisorgee/caddy-easydns/actions/workflows/docker-publish.yml/badge.svg)](https://github.com/advisorgee/caddy-dns-easydns/actions/workflows/docker-publish.yml)
 
-**DockerHub:** advisorgee/caddy-dns-easydns](https://hub.docker.com/r/advisorgee/caddy-dns-easydns)
+**DockerHub:** advisorgee/caddy-easydns](https://hub.docker.com/r/advisorgee/caddy-easydns)
 
 **Docker Pull Command**
 
