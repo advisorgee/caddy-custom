@@ -59,6 +59,11 @@ jobs:
 #          git_commit_gpgsign: true
 #          git_tag_gpgsign: true
 
+      - name: Configure Git
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+
       - name: Commit and push changes
         run: |
           git add ./*/Dockerfile
