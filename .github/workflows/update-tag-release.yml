@@ -61,7 +61,7 @@ jobs:
 
       - name: Commit and push changes
         run: |
-          git add ./Dockerfile
+          git add ./$caddy_build/Dockerfile
           if [ "$(git diff HEAD)" ]
           then
             git commit -S -m "Bump Caddy version to v${{ needs.metadata.outputs.version }} in all Dockerfiles"
