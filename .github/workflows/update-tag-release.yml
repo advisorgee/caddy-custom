@@ -51,13 +51,13 @@ jobs:
           for caddy_build in $CADDY_BUILDS; do
             sed -i "s/caddy:[0-9]\+\.[0-9]\+\.[0-9]\+/caddy:${{ needs.metadata.outputs.version }}/g" ./$caddy_build/Dockerfile
           done
-      - name: Import GPG key
-        uses: crazy-max/ghaction-import-gpg@v6
-        with:
-          gpg_private_key: ${{ secrets.GPG_PRIVATE_KEY }}
-          git_user_signingkey: true
-          git_commit_gpgsign: true
-          git_tag_gpgsign: true
+#      - name: Import GPG key
+#        uses: crazy-max/ghaction-import-gpg@v6
+#        with:
+#          gpg_private_key: ${{ secrets.GPG_PRIVATE_KEY }}
+#          git_user_signingkey: true
+#          git_commit_gpgsign: true
+#          git_tag_gpgsign: true
 
       - name: Configure Git
         run: |
@@ -77,8 +77,9 @@ jobs:
         
       - name: Create and push tag
         run: |
-          git tag -fs v${{ needs.metadata.outputs.version }} -m "Docker images built with Caddy v${{ needs.metadata.outputs.version }}"
+          git tag -f v${{ needs.metadata.outputs.version }} -m "Docker images built with Caddy v${{ needs.metadata.outputs.version }}"
           git push --tags -f
+          
   # Job to create a release
   release:
     name: Create release
