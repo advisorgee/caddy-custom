@@ -1,4 +1,4 @@
-# Caddy v2 Custom Build with ACME dns-easydns plugin
+# Caddy v2 Custom Build with ACME dns-easydns plugin and caddy security
 
 
 [![GitHub release (latest SemVer)](https://img.shields.io/github/v/release/advisorgee/caddy-custom?label=Release)](https://github.com/advisorgee/caddy-custom/releases)
