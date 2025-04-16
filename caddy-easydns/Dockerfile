@@ -1,7 +1,8 @@
 FROM caddy:2.9.1-builder AS builder
 
 RUN xcaddy build \
-    --with github.com/caddy-dns/easydns
+    --with github.com/caddy-dns/easydns \
+    --with github.com/greenpau/caddy-security
 
 FROM caddy:2.9.1
 
