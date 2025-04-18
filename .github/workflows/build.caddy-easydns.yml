@@ -16,6 +16,7 @@ env:
   DOCKER_BUILDKIT: 1
   DOCKER_NAME: caddy-easydns
   DOCKER_DESCRIPTION: "Caddy Docker custom build with EasyDNS DNS module"
+  GOTOOLCHAIN: auto
 
 # Jobs to run once the workflow is triggered
 jobs:
