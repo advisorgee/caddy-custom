@@ -11,6 +11,7 @@ on:
 
 env:
   DOCKER_BUILDKIT: 1
+  GOTOOLCHAIN: auto
   DOCKER_NAME: caddy-easydns
   DOCKER_DESCRIPTION: "Caddy Docker custom build with EasyDNS DNS and Security modules"
   DOCKERFILE_PATH: caddy-easydns/Dockerfile
@@ -103,7 +104,7 @@ jobs:
             echo "Failed to extract version from Dockerfile"
             exit 1
           fi
-          echo "version=$version" >> "$GITHUB_OUTPUT"
+          echo "version=v$version" >> "$GITHUB_OUTPUT"
 
       - name: Build and publish container image
         uses: docker/build-push-action@v6
@@ -113,8 +114,8 @@ jobs:
           file: ./${{ env.DOCKERFILE_PATH }}
           push: true
           tags: |
-            ghcr.io/${{ github.actor }}/${{ env.DOCKER_NAME }}:v${{ steps.version.outputs.version }}
-            docker.io/${{ github.actor }}/${{ env.DOCKER_NAME }}:v${{ steps.version.outputs.version }}
+            ghcr.io/${{ github.actor }}/${{ env.DOCKER_NAME }}:${{ steps.version.outputs.version }}
+            docker.io/${{ github.actor }}/${{ env.DOCKER_NAME }}:${{ steps.version.outputs.version }}
           labels: |
             org.opencontainers.image.title=${{ env.DOCKER_NAME }}
             org.opencontainers.image.description=${{ env.DOCKER_DESCRIPTION }}
