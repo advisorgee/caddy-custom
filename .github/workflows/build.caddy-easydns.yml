@@ -12,9 +12,9 @@ on:
 env:
   DOCKER_BUILDKIT: 1
   DOCKER_NAME: caddy-easydns
-  DOCKER_DESCRIPTION: "Caddy Docker custom build with EasyDNS DNS module"
+  DOCKER_DESCRIPTION: "Caddy Docker custom build with EasyDNS DNS and Security modules"
   GOTOOLCHAIN: auto
-  DOCKERFILE_PATH: caddy-dns-easydns/Dockerfile
+  DOCKERFILE_PATH: caddy-easydns/Dockerfile
 
 jobs:
   update-dockerfile:
