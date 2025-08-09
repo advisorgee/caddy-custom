@@ -5,15 +5,14 @@ on:
   schedule:
     - cron: '0 3 * * *'
   push:
-    branches: ["main"]
+    branches: [main]
     paths:
-      - caddy-dns-easydns/Dockerfile
+      - caddy-easydns/Dockerfile
 
 env:
   DOCKER_BUILDKIT: 1
   DOCKER_NAME: caddy-easydns
   DOCKER_DESCRIPTION: "Caddy Docker custom build with EasyDNS DNS and Security modules"
-  GOTOOLCHAIN: auto
   DOCKERFILE_PATH: caddy-easydns/Dockerfile
 
 jobs:
@@ -29,15 +28,15 @@ jobs:
         with:
           ref: main
 
-      - name: Get latest Caddy version from Docker Hub
+      - name: Get latest Caddy version from GitHub
         id: latest_caddy
         run: |
-          latest=$(curl -s "https://registry.hub.docker.com/v2/repositories/library/caddy/tags?page_size=1" | jq -r '.results[0].name')
+          latest=$(curl -s https://api.github.com/repos/caddyserver/caddy/releases/latest | jq -r .tag_name | sed 's/^v//')
           if [[ -z "$latest" ]]; then
             echo "Failed to fetch Caddy version"
             exit 1
           fi
-          echo "version=$latest" >> $GITHUB_OUTPUT
+          echo "version=$latest" >> "$GITHUB_OUTPUT"
 
       - name: Get current Caddy version from Dockerfile
         id: current_caddy
@@ -47,7 +46,7 @@ jobs:
             echo "Failed to extract current version"
             exit 1
           fi
-          echo "version=$current" >> $GITHUB_OUTPUT
+          echo "version=$current" >> "$GITHUB_OUTPUT"
 
       - name: Update Dockerfile if needed
         id: update_dockerfile
@@ -64,7 +63,7 @@ jobs:
             git push
             updated="true"
           fi
-          echo "updated=$updated" >> $GITHUB_OUTPUT
+          echo "updated=$updated" >> "$GITHUB_OUTPUT"
 
   build-and-publish:
     name: Build and publish Docker image
@@ -99,12 +98,12 @@ jobs:
       - name: Parse Caddy version from Dockerfile
         id: version
         run: |
-          version=$(grep -Eo 'caddy:[0-9]+\.[0-9]+\.[0-9]+' ${{ env.DOCKERFILE_PATH }} | cut -d ':' -f2)
+          version=$(grep -Eo 'caddy:[0-9]+\.[0-9]+\.[0-9]+' "${{ env.DOCKERFILE_PATH }}" | cut -d ':' -f2)
           if [[ -z "$version" ]]; then
             echo "Failed to extract version from Dockerfile"
             exit 1
           fi
-          echo "version=$version" >> $GITHUB_OUTPUT
+          echo "version=$version" >> "$GITHUB_OUTPUT"
 
       - name: Build and publish container image
         uses: docker/build-push-action@v6
@@ -113,11 +112,10 @@ jobs:
           context: .
           file: ./${{ env.DOCKERFILE_PATH }}
           push: true
-          provenance: false
           tags: |
             ghcr.io/${{ github.actor }}/${{ env.DOCKER_NAME }}:v${{ steps.version.outputs.version }}
             docker.io/${{ github.actor }}/${{ env.DOCKER_NAME }}:v${{ steps.version.outputs.version }}
           labels: |
             org.opencontainers.image.title=${{ env.DOCKER_NAME }}
             org.opencontainers.image.description=${{ env.DOCKER_DESCRIPTION }}
-          platforms: linux/amd64,linux/arm64,linux/ppc64le,linux/s390x,linux/arm/v7,linux/arm/v6
+          platforms: linux/amd64,linux/arm64
