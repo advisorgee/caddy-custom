@@ -54,19 +54,33 @@ jobs:
       - name: Update Dockerfile if needed
         id: update_dockerfile
         run: |
-          latest="${{ steps.latest_caddy.outputs.version }}"
-          current="${{ steps.current_caddy.outputs.version }}"
+          latest="2.10.0"
+          # Extract only the first Caddy version from the Dockerfile
+          current=$(grep -oP '(?<=FROM caddy:)[^ ]+' "$DOCKERFILE_PATH" | head -n 1 | tr -d '\r' | xargs)
           updated="false"
+
+          echo "Latest:  $latest"
+          echo "Current: $current"
+
           if [ "$latest" != "$current" ]; then
-            sed -i "s/caddy:$current/caddy:$latest/" $DOCKERFILE_PATH
-            git config --global user.name "github-actions[bot]"
-            git config --global user.email "github-actions[bot]@users.noreply.github.com"
-            git add $DOCKERFILE_PATH
-            git commit -m "chore: bump caddy version to $latest"
-            git push
-            updated="true"
+            echo "Updating Dockerfile from caddy:$current to caddy:$latest..."
+            sed -i "0,/caddy:$current/s//caddy:$latest/" "$DOCKERFILE_PATH"
+
+            if git diff --quiet "$DOCKERFILE_PATH"; then
+              echo "No changes detected after sed."
+            else
+              git config --global user.name "github-actions[bot]"
+              git config --global user.email "github-actions[bot]@users.noreply.github.com"
+              git add "$DOCKERFILE_PATH"
+              git commit -m "chore: bump caddy version to $latest"
+              git push
+              updated="true"
+            fi
+          else
+            echo "Dockerfile already up to date."
           fi
-          updated=$(echo "$updated" | tr -d "\r" | xargs)
+ 
+          updated=$(echo "$updated" | tr -d '\r' | xargs)
           echo "updated=$updated" >> "$GITHUB_OUTPUT"
 
   build-and-publish:
