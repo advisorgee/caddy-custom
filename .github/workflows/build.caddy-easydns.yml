@@ -37,6 +37,7 @@ jobs:
             echo "Failed to fetch Caddy version"
             exit 1
           fi
+          latest=$(echo "$latest" | tr -d "\r" | xargs)
           echo "version=$latest" >> "$GITHUB_OUTPUT"
 
       - name: Get current Caddy version from Dockerfile
@@ -47,6 +48,7 @@ jobs:
             echo "Failed to extract current version"
             exit 1
           fi
+          current=$(echo "$current" | tr -d "\r" | xargs)
           echo "version=$current" >> "$GITHUB_OUTPUT"
 
       - name: Update Dockerfile if needed
@@ -64,6 +66,7 @@ jobs:
             git push
             updated="true"
           fi
+          updated=$(echo "$updated" | tr -d "\r" | xargs)
           echo "updated=$updated" >> "$GITHUB_OUTPUT"
 
   build-and-publish:
@@ -104,7 +107,8 @@ jobs:
             echo "Failed to extract version from Dockerfile"
             exit 1
           fi
-          echo "version=v$version" >> "$GITHUB_OUTPUT"
+          version=$(echo "$version" | tr -d "\r" | xargs)
+          echo "version=$version" >> "$GITHUB_OUTPUT"
 
       - name: Build and publish container image
         uses: docker/build-push-action@v6
@@ -114,8 +118,8 @@ jobs:
           file: ./${{ env.DOCKERFILE_PATH }}
           push: true
           tags: |
-            ghcr.io/${{ github.actor }}/${{ env.DOCKER_NAME }}:${{ steps.version.outputs.version }}
-            docker.io/${{ github.actor }}/${{ env.DOCKER_NAME }}:${{ steps.version.outputs.version }}
+            ghcr.io/${{ github.actor }}/${{ env.DOCKER_NAME }}:v${{ steps.version.outputs.version }}
+            docker.io/${{ github.actor }}/${{ env.DOCKER_NAME }}:v${{ steps.version.outputs.version }}
           labels: |
             org.opencontainers.image.title=${{ env.DOCKER_NAME }}
             org.opencontainers.image.description=${{ env.DOCKER_DESCRIPTION }}
