@@ -54,7 +54,7 @@ jobs:
       - name: Update Dockerfile if needed
         id: update_dockerfile
         run: |
-          latest="2.10.0"
+          # latest="2.10.0"
           # Extract only the first Caddy version from the Dockerfile
           current=$(grep -oP '(?<=FROM caddy:)[^ ]+' "$DOCKERFILE_PATH" | head -n 1 | tr -d '\r' | xargs)
           updated="false"
