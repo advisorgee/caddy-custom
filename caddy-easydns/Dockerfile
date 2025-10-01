@@ -1,4 +1,4 @@
-FROM caddy:2.10.0 AS builder
+FROM caddy: AS builder
 
 RUN xcaddy build \
     --with github.com/caddy-dns/easydns \
